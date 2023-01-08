@@ -19,7 +19,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     firstName: DataTypes.STRING,
     lastName: DataTypes.STRING,
-    email: DataTypes.STRING
+    email: DataTypes.STRING,
+    passwordDigest: DataTypes.STRING // add passwordDigest to model for use in API
   }, {
     sequelize,
     underscored: true,

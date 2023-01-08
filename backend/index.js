@@ -5,18 +5,21 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express();
 
+
 // Express Settings
 app.use(cors())
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-// Controllers & Routes
 
+// Controllers & Routes
 app.use(express.urlencoded({ extended: true }))
 
 app.use('/places', require('./controllers/places'))
 app.use('/users', require('./controllers/users'))
+app.use('/authentication', require('./controllers/authentication')); // Connect the authentication controller to our Express API
+
 
 // Listen for Connections
 app.listen(process.env.PORT, () => {

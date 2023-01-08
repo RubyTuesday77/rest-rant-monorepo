@@ -17,30 +17,50 @@ function LoginForm() {
 
     async function handleSubmit(e) {
         e.preventDefault()
-       
 
+        // Add fetch request to trigger authentication route handler when a login is submitted
+        const response = await fetch(`http://localhost:5000/authentication/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(credentials)
+        })
+
+        const data = await response.json()
+        // console.log(data)
+
+        /* API response to login:
+        (1) if request is successful (user login matches database), add username to navbar and re-direct to home page
+        (2) if request failed (login data doesn't match anything in db), display error message */
+        if(response.status === 200) {
+            setCurrentUser(data.user)
+            history.push(`/`)
+        } else {
+            setErrorMessage(data.message)
+        }
     }
 
     return (
         <main>
             <h1>Login</h1>
-            {errorMessage !== null
+            { errorMessage !== null
                 ? (
                     <div className="alert alert-danger" role="alert">
-                        {errorMessage}
+                        { errorMessage }
                     </div>
                 )
                 : null
             }
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={ handleSubmit }>
                 <div className="row">
                     <div className="col-sm-6 form-group">
                         <label htmlFor="email">Email</label>
                         <input
                             type="email"
                             required
-                            value={credentials.email}
-                            onChange={e => setCredentials({ ...credentials, email: e.target.value })}
+                            value={ credentials.email }
+                            onChange={ e => setCredentials({ ...credentials, email: e.target.value }) }
                             className="form-control"
                             id="email"
                             name="email"
@@ -51,8 +71,8 @@ function LoginForm() {
                         <input
                             type="password"
                             required
-                            value={credentials.password}
-                            onChange={e => setCredentials({ ...credentials, password: e.target.value })}
+                            value={ credentials.password }
+                            onChange={ e => setCredentials({ ...credentials, password: e.target.value }) }
                             className="form-control"
                             id="password"
                             name="password"

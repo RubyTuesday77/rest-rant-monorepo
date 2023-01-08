@@ -29,14 +29,14 @@ function SignUpForm() {
 	return (
 		<main>
 			<h1>Sign Up</h1>
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={ handleSubmit }>
 				<div className="row">
 					<div className="col-sm-6 form-group">
 						<label htmlFor="firstName">First Name</label>
 						<input
 							required
-							value={user.firstName}
-							onChange={e => setUser({ ...user, firstName: e.target.value })}
+							value={ user.firstName }
+							onChange={ e => setUser({ ...user, firstName: e.target.value }) }
 							className="form-control"
 							id="firstName"
 							name="firstName"
@@ -46,8 +46,8 @@ function SignUpForm() {
 						<label htmlFor="lastName">Last Name</label>
 						<input
 							required
-							value={user.lastName}
-							onChange={e => setUser({ ...user, lastName: e.target.value })}
+							value={ user.lastName }
+							onChange={ e => setUser({ ...user, lastName: e.target.value }) }
 							className="form-control"
 							id="lastName"
 							name="lastName"
@@ -60,13 +60,27 @@ function SignUpForm() {
 						<input
 							type="email"
 							required
-							value={user.email}
-							onChange={e => setUser({ ...user, email: e.target.value })}
+							value={ user.email }
+							onChange={ e => setUser({ ...user, email: e.target.value }) }
 							className="form-control"
 							id="email"
 							name="email"
 						/>
 					</div>
+                    
+                    {/* Add field for user password */}
+                    <div className="col-sm-6 form-group">
+                        <label htmlFor="password">Password</label>
+                        <input
+                            type="password"
+                            required
+                            value={ user.passeword }
+                            onChange={ e => setUser({ ...user, password: e.target.value })}
+                            className="form-control"
+                            id="password"
+                            name="password"
+                        />
+                    </div>
 				</div>
 				<input className="btn btn-primary" type="submit" value="Sign Up" />
 			</form>
