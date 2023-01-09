@@ -35,6 +35,8 @@ function LoginForm() {
         (2) if request failed (login data doesn't match anything in db), display error message */
         if(response.status === 200) {
             setCurrentUser(data.user)
+            // console.log(data.token)
+            localStorage.setItem('token', data.token)
             history.push(`/`)
         } else {
             setErrorMessage(data.message)
