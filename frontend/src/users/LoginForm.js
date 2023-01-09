@@ -21,6 +21,7 @@ function LoginForm() {
         // Add fetch request to trigger authentication route handler when a login is submitted
         const response = await fetch(`http://localhost:5000/authentication/`, {
             method: 'POST',
+            credentials: 'include',
             headers: {
                 'Content-Type': 'application/json'
             },
