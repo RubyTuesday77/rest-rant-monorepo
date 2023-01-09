@@ -10,6 +10,7 @@ const cookieSession = require("cookie-session");
 // Express Settings
 app.use(cookieSession ({
     name: "session",
+    sameSite: 'strict',  // Prevents browser from automatically attaching cookies to requests from other sources (i.e., CSRF-example.html)
     keys: [process.env.SESSION_SECRET],
     maxAge: 24 * 60 * 60 * 1000 // 24 hours
 }));
