@@ -11,22 +11,34 @@ function Navigation() {
     let loginActions = (
         <>
             <li style={{ float: 'right' }}>
-                <a href="#" onClick={() => history.push("/sign-up")}>
+                <a href="#" onClick={ () => history.push("/sign-up") }>
                     Sign Up
                 </a>
             </li>
             <li style={{ float: 'right' }}>
-                <a href="#" onClick={() => history.push("/login")}>
+                <a href="#" onClick={ () => history.push("/login") }>
                     Login
                 </a>
             </li>
         </>
     )
 
-    if (currentUser) {
+    if(currentUser) {
         loginActions = (
             <li style={{ float: 'right' }}>
-                Logged in as {currentUser.firstName} {currentUser.lastName}
+                Logged in as { currentUser.firstName } { currentUser.lastName }
+            </li>
+        )
+    }
+
+    let addPlaceButton = null
+
+    if(currentUser?.role === 'admin') {
+        addPlaceButton = (
+            <li>
+                <a href="#" onClick={ () => history.push("/places/new") }>
+                    Add Place
+                </a>
             </li>
         )
     }
@@ -35,21 +47,17 @@ function Navigation() {
         <nav>
             <ul>
                 <li>
-                    <a href="#" onClick={() => history.push("/")}>
+                    <a href="#" onClick={ () => history.push("/") }>
                         Home
                     </a>
                 </li>
                 <li>
-                    <a href="#" onClick={() => history.push("/places")}>
+                    <a href="#" onClick={ () => history.push("/places") }>
                         Places
                     </a>
                 </li>
-                <li>
-                    <a href="#" onClick={() => history.push("/places/new")}>
-                        Add Place
-                    </a>
-                </li>
-                {loginActions}
+                { addPlaceButton }
+                { loginActions }
             </ul>
         </nav>
     )
