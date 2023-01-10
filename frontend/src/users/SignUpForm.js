@@ -68,7 +68,6 @@ function SignUpForm() {
 						/>
 					</div>
                     
-                    {/* Add field for user password */}
                     <div className="col-sm-6 form-group">
                         <label htmlFor="password">Password</label>
                         <input

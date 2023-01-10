@@ -17,8 +17,6 @@ function LoginForm() {
 
     async function handleSubmit(e) {
         e.preventDefault()
-
-        // Add fetch request to trigger authentication route handler when a login is submitted
         const response = await fetch(`http://localhost:5000/authentication/`, {
             method: 'POST',
             headers: {
@@ -28,14 +26,9 @@ function LoginForm() {
         })
 
         const data = await response.json()
-        // console.log(data)
-
-        /* API response to login:
-        (1) if request is successful (user login matches database), add username to navbar and re-direct to home page
-        (2) if request failed (login data doesn't match anything in db), display error message */
+    
         if(response.status === 200) {
             setCurrentUser(data.user)
-            // console.log(data.token)
             localStorage.setItem('token', data.token)
             history.push(`/`)
         } else {
@@ -48,9 +41,7 @@ function LoginForm() {
             <h1>Login</h1>
             { errorMessage !== null
                 ? (
-                    <div className="alert alert-danger" role="alert">
-                        { errorMessage }
-                    </div>
+                    <div className="alert alert-danger" role="alert">{ errorMessage }</div>
                 )
                 : null
             }

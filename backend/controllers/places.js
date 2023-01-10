@@ -5,13 +5,13 @@ const { Place, Comment, User } = db
 
 
 router.post('/', async (req, res) => {
-    if (!req.body.pic) {
+    if(!req.body.pic) {
         req.body.pic = 'http://placekitten.com/400/400'
     }
-    if (!req.body.city) {
+    if(!req.body.city) {
         req.body.city = 'Anytown'
     }
-    if (!req.body.state) {
+    if(!req.body.state) {
         req.body.state = 'USA'
     }
     const place = await Place.create(req.body)
@@ -27,7 +27,7 @@ router.get('/', async (req, res) => {
 
 router.get('/:placeId', async (req, res) => {
     let placeId = Number(req.params.placeId)
-    if (isNaN(placeId)) {
+    if(isNaN(placeId)) {
         res.status(404).json({ message: `Invalid id "${placeId}"` })
     } else {
         const place = await Place.findOne({
@@ -37,7 +37,7 @@ router.get('/:placeId', async (req, res) => {
                 include: 'author'
             }
         })
-        if (!place) {
+        if(!place) {
             res.status(404).json({ message: `Could not find place with id "${placeId}"` })
         } else {
             res.json(place)
@@ -48,13 +48,13 @@ router.get('/:placeId', async (req, res) => {
 
 router.put('/:placeId', async (req, res) => {
     let placeId = Number(req.params.placeId)
-    if (isNaN(placeId)) {
+    if(isNaN(placeId)) {
         res.status(404).json({ message: `Invalid id "${placeId}"` })
     } else {
         const place = await Place.findOne({
             where: { placeId: placeId },
         })
-        if (!place) {
+        if(!place) {
             res.status(404).json({ message: `Could not find place with id "${placeId}"` })
         } else {
             Object.assign(place, req.body)
@@ -67,7 +67,7 @@ router.put('/:placeId', async (req, res) => {
 
 router.delete('/:placeId', async (req, res) => {
     let placeId = Number(req.params.placeId)
-    if (isNaN(placeId)) {
+    if(isNaN(placeId)) {
         res.status(404).json({ message: `Invalid id "${placeId}"` })
     } else {
         const place = await Place.findOne({
@@ -75,7 +75,7 @@ router.delete('/:placeId', async (req, res) => {
                 placeId: placeId
             }
         })
-        if (!place) {
+        if(!place) {
             res.status(404).json({ message: `Could not find place with id "${placeId}"` })
         } else {
             await place.destroy()
@@ -100,40 +100,11 @@ router.post('/:placeId/comments', async (req, res) => {
         })
     }
 
-    // Throw error if user tries to create a commnet without being logged in:
     if(!req.currentUser) {
         return res.status(404).json({
             message: `You must be logged in to leave a rant or rave.`
         })
     }
-
-    /* Copied code from authentication controller that finds a logged-in user based on a JWT token:
-    let currentUser;
-    try {
-        const [method, token] = req.headers.authorization.split(' ')
-        if(method === 'Bearer') {
-            const result = await jwt.decode(process.env.JWT_SECRET, token)
-            const { id } = result.value
-            currentUser = await User.findOne({
-                where: {
-                    userId: id
-                }
-            })
-        }
-    } catch {
-        currentUser = null
-    }
-    */
-
-    /* Replaced with currentUser code above
-    const author = await User.findOne({
-        where: { userId: req.body.authorId }
-    })
-
-    if(!author) {
-        res.status(404).json({ message: `Could not find author with id "${req.body.authorId}"` })
-    }
-    */
 
     const comment = await Comment.create({
         ...req.body,

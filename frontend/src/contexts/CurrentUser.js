@@ -2,10 +2,9 @@ import { createContext, useState, useEffect } from "react";
 
 export const CurrentUser = createContext()
 
-function CurrentUserProvider({ children }){
+function CurrentUserProvider({ children }) {
     const [currentUser, setCurrentUser] = useState(null);
 
-    // useEffect to send fetch request to see if user is logged in:
     useEffect(() => {
         const getLoggedInUser = async () => {
             let response = await fetch('http://localhost:5000/authentication/profile', {
@@ -18,6 +17,7 @@ function CurrentUserProvider({ children }){
         }
         getLoggedInUser()
     }, [])
+
 
     return (
         <CurrentUser.Provider value={{ currentUser, setCurrentUser }}>

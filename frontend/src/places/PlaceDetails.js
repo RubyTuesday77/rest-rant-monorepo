@@ -55,7 +55,7 @@ function PlaceDetails() {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${localStorage.getItem("token")}` // Include the JWT when making the fetch request that creates a new comment
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
             },
             body: JSON.stringify(commentAttributes)
         });

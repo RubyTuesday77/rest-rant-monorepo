@@ -1,11 +1,10 @@
 const router = require('express').Router()
 const db = require('../models')
-const bcrypt = require('bcrypt')  // require bcrypt (to hash user password)
+const bcrypt = require('bcrypt')
 
 const { User } = db
 
 router.post('/', async (req, res) => {
-    // Use bcrypt in route handler to define passwordDigest column
     let { password, ...rest } = req.body;
     const user = await User.create({ 
         ...rest,
