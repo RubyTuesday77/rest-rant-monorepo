@@ -21,7 +21,7 @@ function CurrentUserProvider({ children }){
 
     return (
         <CurrentUser.Provider value={{ currentUser, setCurrentUser }}>
-        {children}
+            { children }
         </CurrentUser.Provider>
     );
 }

@@ -1,17 +1,19 @@
-import { useState, useEffect } from "react"
-import { useHistory } from "react-router"
+import { useState, useContext } from "react";
+import { CurrentUser } from "../contexts/CurrentUser";
 
 function NewCommentForm({ place, onSubmit }) {
 
-    const [authors, setAuthors] = useState([])
+    // Remove author array along with drop-down list in form
+    // const [authors, setAuthors] = useState([])
 
     const [comment, setComment] = useState({
         content: '',
         stars: 3,
-        rant: false,
-        authorId: ''
+        rant: false
+        // authorId: ''
     })
 
+    /* Remove authorId:
     useEffect(() => {
         const fetchData = async () => {
             const response = await fetch(`http://localhost:5000/users`)
@@ -25,6 +27,7 @@ function NewCommentForm({ place, onSubmit }) {
     let authorOptions = authors.map(author => {
         return <option key={author.userId} value={author.userId}>{author.firstName} {author.lastName}</option>
     })
+    */
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -32,62 +35,76 @@ function NewCommentForm({ place, onSubmit }) {
         setComment({
             content: '',
             stars: 3,
-            rant: false,
-            authorId: authors[0]?.userId
+            rant: false
+            // authorId: authors[0]?.userId
         })
     }
 
+    const { currentUser } = useContext(CurrentUser);
+
+    if(!currentUser) {
+        return <p>You must be logged in to leave a rant or rave.</p>
+    }
+
     return (
-        <form onSubmit={handleSubmit}>
-            <div className="row">
-                <div className="form-group col-sm-12">
-                    <label htmlFor="content">Content</label>
-                    <textarea
-                        required
-                        value={comment.content}
-                        onChange={e => setComment({ ...comment, content: e.target.value })}
-                        className="form-control"
-                        id="content"
-                        name="content"
-                    />
-                </div>
-            </div>
-            <div className="row">
-                <div className="form-group col-sm-4">
-                    <label htmlFor="state">Author</label>
-                    <select className="form-control" value={comment.authorId} onChange={e => setComment({ ...comment, authorId: e.target.value })}>
-                        {authorOptions}
-                    </select>
-                </div>
-                <div className="form-group col-sm-4">
-                    <label htmlFor="stars">Star Rating</label>
-                    <input
-                        value={comment.stars}
-                        onChange={e => setComment({ ...comment, stars: e.target.value })}
-                        type="range"
-                        step="0.5"
-                        min="1"
-                        max="5"
-                        id="stars"
-                        name="stars"
-                        className="form-control"
-                    />
-                </div>
-                <div className="form-group col-sm-4">
-                    <label htmlFor="rand">Rant</label>
-                    <input
-                        checked={place.rant}
-                        onClick={e => setComment({ ...comment, rant: e.target.checked })}
-                        type="checkbox"
-                        id="rant"
-                        name="rant"
-                        className="form-control"
-                    />
-                </div>
-            </div>
-            <input className="btn btn-primary" type="submit" value="Add Comment" />
-        </form>
-    )
+      <form onSubmit={ handleSubmit }>
+        <div className="row">
+          <div className="form-group col-sm-12">
+            <label htmlFor="content">Content</label>
+            <textarea
+              required
+              value={ comment.content }
+              onChange={ (e) => setComment({ ...comment, content: e.target.value }) }
+              className="form-control"
+              id="content"
+              name="content"
+            />
+          </div>
+        </div>
+        <div className="row">
+          {/* Removed author dropdown:
+          <div className="form-group col-sm-4">
+            <label htmlFor="state">Author</label>
+            <select
+              className="form-control"
+              value={ comment.authorId }
+              onChange={ (e) =>
+                setComment({ ...comment, authorId: e.target.value })
+              }
+            >
+              {authorOptions}
+            </select>
+          </div>
+          */}
+          <div className="form-group col-sm-4">
+            <label htmlFor="stars">Star Rating</label>
+            <input
+              value={ comment.stars }
+              onChange={ (e) => setComment({ ...comment, stars: e.target.value }) }
+              type="range"
+              step="0.5"
+              min="1"
+              max="5"
+              id="stars"
+              name="stars"
+              className="form-control"
+            />
+          </div>
+          <div className="form-group col-sm-4">
+            <label htmlFor="rant">Rant</label>
+            <input
+              checked={ place.rant }
+              onClick={ (e) => setComment({ ...comment, rant: e.target.checked }) }
+              type="checkbox"
+              id="rant"
+              name="rant"
+              className="form-control"
+            />
+          </div>
+        </div>
+        <input className="btn btn-primary" type="submit" value="Add Comment" />
+      </form>
+    );
 }
 
 export default NewCommentForm

@@ -4,6 +4,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const app = express();
+const defineCurrentUser = require('./middleware/defineCurrentUser') // Add middleware to find logged in user
 
 
 // Express Settings
@@ -11,6 +12,7 @@ app.use(cors())
 app.use(express.static('public'))
 app.use(express.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+app.use(defineCurrentUser) // Add middleware to attach user to request object
 
 
 // Controllers & Routes

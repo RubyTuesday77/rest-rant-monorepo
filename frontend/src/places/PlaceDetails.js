@@ -1,13 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useHistory, useParams } from "react-router"
 import CommentCard from './CommentCard'
 import NewCommentForm from "./NewCommentForm";
+import { CurrentUser } from "../contexts/CurrentUser";
 
 function PlaceDetails() {
 
 	const { placeId } = useParams()
 
 	const history = useHistory()
+
+    const { currentUser } = useContext(CurrentUser)
 
 	const [place, setPlace] = useState(null)
 
@@ -20,7 +23,7 @@ function PlaceDetails() {
 		fetchData()
 	}, [placeId])
 
-	if (place === null) {
+	if(place === null) {
 		return <h1>Loading</h1>
 	}
 
@@ -49,12 +52,13 @@ function PlaceDetails() {
 
 	async function createComment(commentAttributes) {
 		const response = await fetch(`http://localhost:5000/places/${place.placeId}/comments`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			body: JSON.stringify(commentAttributes)
-		})
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${localStorage.getItem("token")}` // Include the JWT when making the fetch request that creates a new comment
+            },
+            body: JSON.stringify(commentAttributes)
+        });
 
 		const comment = await response.json()
 
@@ -69,34 +73,29 @@ function PlaceDetails() {
 	}
 
 
-
 	let comments = (
-		<h3 className="inactive">
-			No comments yet!
-		</h3>
+		<h3 className="inactive">No comments yet!</h3>
 	)
+
 	let rating = (
-		<h3 className="inactive">
-			Not yet rated
-		</h3>
+		<h3 className="inactive">Not yet rated</h3>
 	)
-	if (place.comments.length) {
+
+	if(place.comments.length) {
 		let sumRatings = place.comments.reduce((tot, c) => {
 			return tot + c.stars
 		}, 0)
 		let averageRating = Math.round(sumRatings / place.comments.length)
 		let stars = ''
-		for (let i = 0; i < averageRating; i++) {
+		for(let i = 0; i < averageRating; i++) {
 			stars += '⭐️'
 		}
 		rating = (
-			<h3>
-				{stars} stars
-			</h3>
+			<h3>{ stars } stars</h3>
 		)
 		comments = place.comments.map(comment => {
 			return (
-				<CommentCard key={comment.commentId} comment={comment} onDelete={() => deleteComment(comment)} />
+				<CommentCard key={ comment.commentId } comment={ comment } onDelete={ () => deleteComment(comment) } />
 			)
 		})
 	}
@@ -106,47 +105,29 @@ function PlaceDetails() {
 		<main>
 			<div className="row">
 				<div className="col-sm-6">
-					<img style={{ maxWidth: 200 }} src={place.pic} alt={place.name} />
-					<h3>
-						Located in {place.city}, {place.state}
-					</h3>
+					<img style={{ maxWidth: 200 }} src={ place.pic } alt={ place.name } />
+					<h3>Located in { place.city }, { place.state }</h3>
 				</div>
 				<div className="col-sm-6">
-					<h1>{place.name}</h1>
-					<h2>
-						Rating
-					</h2>
-					{rating}
+					<h1>{ place.name }</h1>
+					<h2>Rating</h2>
+					{ rating }
 					<br />
-					<h2>
-						Description
-					</h2>
-					<h3>
-						{place.name} has been serving {place.city}, {place.state} since {place.founded}.
-					</h3>
-					<h4>
-						Serving {place.cuisines}.
-					</h4>
+					<h2>Description</h2>
+					<h3>{ place.name } has been serving { place.city }, { place.state } since { place.founded }.</h3>
+					<h4>Serving { place.cuisines }.</h4>
 					<br />
-					<a className="btn btn-warning" onClick={editPlace}>
-						Edit
-					</a>{` `}
-					<button type="submit" className="btn btn-danger" onClick={deletePlace}>
-						Delete
-					</button>
+					<a className="btn btn-warning" onClick={ editPlace }>Edit</a>
+                    { ` ` }
+					<button type="submit" className="btn btn-danger" onClick={ deletePlace }>Delete</button>
 				</div>
 			</div>
 			<hr />
 			<h2>Comments</h2>
-			<div className="row">
-				{comments}
-			</div>
+			<div className="row">{ comments }</div>
 			<hr />
 			<h2>Got Your Own Rant or Rave?</h2>
-			<NewCommentForm
-				place={place}
-				onSubmit={createComment}
-			/>
+			<NewCommentForm place={ place } onSubmit={ createComment } />
 		</main>
 	)
 }

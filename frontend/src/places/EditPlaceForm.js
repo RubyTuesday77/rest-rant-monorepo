@@ -41,13 +41,13 @@ function EditPlaceForm() {
 	return (
 		<main>
 			<h1>Edit Place</h1>
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={ handleSubmit }>
 				<div className="form-group">
 					<label htmlFor="name">Place Name</label>
 					<input
 						required
-						value={place.name}
-						onChange={e => setPlace({ ...place, name: e.target.value })}
+						value={ place.name }
+						onChange={ e => setPlace({ ...place, name: e.target.value }) }
 						className="form-control"
 						id="name"
 						name="name"
@@ -57,8 +57,8 @@ function EditPlaceForm() {
 					<label htmlFor="founded">Year Founded</label>
 					<input
 						required
-						value={place.founded}
-						onChange={e => setPlace({ ...place, founded: e.target.value })}
+						value={ place.founded }
+						onChange={ e => setPlace({ ...place, founded: e.target.value }) }
 						className="form-control"
 						id="founded"
 						name="founded"
@@ -67,8 +67,8 @@ function EditPlaceForm() {
 				<div className="form-group">
 					<label htmlFor="pic">Place Picture</label>
 					<input
-						value={place.pic}
-						onChange={e => setPlace({ ...place, pic: e.target.value })}
+						value={ place.pic }
+						onChange={ e => setPlace({ ...place, pic: e.target.value }) }
 						className="form-control"
 						id="pic"
 						name="pic"
@@ -77,8 +77,8 @@ function EditPlaceForm() {
 				<div className="form-group">
 					<label htmlFor="city">City</label>
 					<input
-						value={place.city}
-						onChange={e => setPlace({ ...place, city: e.target.value })}
+						value={ place.city }
+						onChange={ e => setPlace({ ...place, city: e.target.value }) }
 						className="form-control"
 						id="city"
 						name="city"
@@ -87,8 +87,8 @@ function EditPlaceForm() {
 				<div className="form-group">
 					<label htmlFor="state">State</label>
 					<input
-						value={place.state}
-						onChange={e => setPlace({ ...place, state: e.target.value })}
+						value={ place.state }
+						onChange={ e => setPlace({ ...place, state: e.target.value }) }
 						className="form-control"
 						id="state"
 						name="state"
@@ -97,8 +97,8 @@ function EditPlaceForm() {
 				<div className="form-group">
 					<label htmlFor="cuisines">Cuisines</label>
 					<input
-						value={place.cuisines}
-						onChange={e => setPlace({ ...place, cuisines: e.target.value })}
+						value={ place.cuisines }
+						onChange={ e => setPlace({ ...place, cuisines: e.target.value }) }
 						className="form-control"
 						id="cuisines" name="cuisines" required />
 				</div>

@@ -9,14 +9,14 @@ const { User } = db;
 router.post("/", async (req, res) => {
     // Compare user credentials to data in database when login form submitted
     let user = await User.findOne({
-        where: { email: req.body.email },
+        where: { email: req.body.email }
     });
     // console.log(user);
 
     // Compare password from the frontend login with the passwordDigest stored in our backend database
     if(!user || !await bcrypt.compare(req.body.password, user.passwordDigest)) {
         res.status(404).json({
-            message: `Could not find a user with the provided username and password`,
+            message: `Could not find a user with the provided username and password`
         });
     } else {
         // Create a JWT if login is successful
@@ -27,6 +27,7 @@ router.post("/", async (req, res) => {
 
 // Add route handler to handle logged in user:
 router.get('/profile', async (req, res) => {
+    /* Replace token parsing code with req.currentUser
     try {
         // Split authorization header into ["Bearer", "TOKEN"]:
         const [authenticationMethod, token] = req.headers.authorization.split(' ')
@@ -51,6 +52,8 @@ router.get('/profile', async (req, res) => {
     } catch {
         res.json(null)
     }
+    */
+   res.json(req.currentUser)
 })
 
 module.exports = router;
